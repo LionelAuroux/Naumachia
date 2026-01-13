@@ -1,12 +1,12 @@
 # Based on https://github.com/kylemanna/docker-openvpn/blob/master/Dockerfile
-FROM python:3.10-alpine3.16
+FROM python:3.11-alpine3.21
 
 # TODO(victor): Split this into a builder pattern to make the final image smaller.
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/community/" >> /etc/apk/repositories && \
-    echo "http://dl-4.alpinelinux.org/alpine/edge/testing/" >> /etc/apk/repositories && \
-    apk add --update --no-cache autoconf automake libtool openssl-dev libnl3-dev libcap-ng-dev\
-    linux-pam-dev net-tools linux-headers build-base git bash easy-rsa iptables iproute2 && \
-    ln -s /usr/share/easy-rsa/easyrsa /usr/local/bin
+RUN apk add --update --no-cache \
+    autoconf automake libtool openssl-dev libnl3-dev libcap-ng-dev \
+    linux-pam-dev net-tools linux-headers build-base git bash \
+    easy-rsa iptables iproute2 \
+    && ln -s /usr/share/easy-rsa/easyrsa /usr/local/bin
 
 COPY ./requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt

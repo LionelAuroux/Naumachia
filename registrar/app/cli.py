@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 import argparse
-import registrar
 import logging
+import sys
+from os import path
+
+# Add the registrar app directory to the path
+script_dir = path.dirname(path.realpath(__file__))
+sys.path.insert(0, path.join(script_dir, 'registrar', 'app'))
+
+from registrar import Registrar, CertificateListing, EASYRSA
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -10,7 +17,7 @@ def parse_args():
     )
     parser.add_argument('challenge', help="the short name for the challenge")
     parser.add_argument('--openvpn', metavar='PATH', help="path to the directory for openvpn configurations", default=None)
-    parser.add_argument('--easyrsa', metavar='PATH', help="path to the directory containing the easyrsa executable", default=registrar.EASYRSA)
+    parser.add_argument('--easyrsa', metavar='PATH', help="path to the directory containing the easyrsa executable", default=EASYRSA)
     subparsers = parser.add_subparsers(dest='action', help="what you wish to do with the client config")
 
     parser_add = subparsers.add_parser('add', help="create a set of certificates for a client")
@@ -39,7 +46,7 @@ if __name__ == "__main__":
 
     args = parse_args()
 
-    regi = registrar.Registrar(args.challenge, args.openvpn, args.easyrsa)
+    regi = Registrar(args.challenge, args.openvpn, args.easyrsa)
 
     if args.action == 'add':
         if args.recreate:
@@ -60,8 +67,8 @@ if __name__ == "__main__":
     elif args.action == 'list':
         for entry in regi.list_certs(args.client):
             print(entry.cn, end=' ')
-            if entry.status == registrar.CertificateListing.Status.EXPIRED:
+            if entry.status == CertificateListing.Status.EXPIRED:
                 print("[EXPIRED]", end=' ')
-            if entry.status == registrar.CertificateListing.Status.REVOKED:
+            if entry.status == CertificateListing.Status.REVOKED:
                 print("[REVOKED]", end=' ')
             print()

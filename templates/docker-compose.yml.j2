@@ -30,7 +30,10 @@ services:
                 - OVPN_REPO_BRANCH
         image: naumachia/openvpn
         depends_on:
-            - bootstrapper
+            bootstrapper:
+                condition: service_completed_successfully
+            redis:
+                condition: service_healthy
         cap_add:
             - NET_ADMIN
         restart: on-failure
@@ -79,24 +82,32 @@ services:
 
     {% endif -%}
     redis:
-        image: redis:alpine
+        image: redis:7-alpine
         networks:
             internal:
                 aliases:
-                    - "$REDIS_HOSTNAME"
+                    - redis
         volumes:
-            - ./redis/config:/usr/local/etc/redis
-            - ./logs:/data/log
+            - ./redis/config:/usr/local/etc/redis:ro
         environment:
             - REDIS_PASSWORD
-        command: [redis-server, /usr/local/etc/redis/redis.conf, --requirepass, $REDIS_PASSWORD]
+        command: [redis-server, /usr/local/etc/redis/redis.conf, --requirepass, "${REDIS_PASSWORD}"]
         restart: on-failure
+        healthcheck:
+            test: ["CMD-SHELL", "redis-cli -a $${REDIS_PASSWORD} ping 2>/dev/null | grep -q PONG"]
+            interval: 5s
+            timeout: 3s
+            retries: 5
+            start_period: 10s
 
     manager:
         build: ./manager/build
         image: naumachia/manager
         depends_on:
-            - bootstrapper
+            bootstrapper:
+                condition: service_completed_successfully
+            redis:
+                condition: service_healthy
         networks:
             internal:
         volumes:

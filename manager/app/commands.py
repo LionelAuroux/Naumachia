@@ -134,7 +134,7 @@ class BrctlCmd(Cmd):
 
 class ComposeCmd(Cmd):
     """
-    Kicks off and monitors docker-compose commands
+    Kicks off and monitors docker compose (v2) commands
     """
     UP = 1
     STOP = 2
@@ -153,7 +153,7 @@ class ComposeCmd(Cmd):
         else:
             self.files = [files]
 
-        self.args = ['docker-compose']
+        self.args = ['docker', 'compose']
         if self.project:
             self.args.append('-p')
             self.args.append(self.project)

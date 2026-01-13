@@ -1,10 +1,10 @@
-FROM python:3-alpine
+FROM python:3.11-alpine3.19
 
 COPY ./requirements.txt ./requirements.txt
-RUN pip install -r ./requirements.txt
+RUN pip install --no-cache-dir -r ./requirements.txt
 
 # EasyRSA version, without 'v' prefix, used to fetch the release from GitHub.
-ARG EASYRSA_VERSION=3.1.0
+ARG EASYRSA_VERSION=3.2.0
 
 RUN apk add --update --no-cache openssl
 
