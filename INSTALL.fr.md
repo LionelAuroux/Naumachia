@@ -523,6 +523,7 @@ naumachia/
 ## 📞 Support
 
 En cas de problème:
+
 1. Vérifiez les logs: `docker compose logs`
 2. Consultez les issues GitHub du projet original: https://github.com/nategraf/Naumachia/issues
 3. Discord Naumachia: https://discord.gg/gH9ZgeT

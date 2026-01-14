@@ -217,11 +217,16 @@ class Registrar:
 
     @property
     def _run_env(self):
-        return {
+        # Start with current environment and add/override our variables
+        import os
+        env = os.environ.copy()
+        env.update({
             "OPENVPN": self.openvpn_dir,
             "EASYRSA": self.easyrsa_dir,
-            "EASYRSA_PKI": self.easyrsa_pki
-        }
+            "EASYRSA_PKI": self.easyrsa_pki,
+            "EASYRSA_BATCH": "1"
+        })
+        return env
 
     def _run(self, cmdargs, handler=None, **kwargs):
         try:
