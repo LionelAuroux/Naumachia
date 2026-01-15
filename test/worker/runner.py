@@ -13,7 +13,7 @@ abort_grace = 1.0
 class Runner:
     """Runner holds establishes connection to the challenge and runs the given strategy."""
 
-    def __init__(self, vpnconfig, flagpattern=r'flag{[^}]*}', iface='tap0', timeout=300):
+    def __init__(self, vpnconfig, flagpattern=r'2600{[^}]*}', iface='tap0', timeout=300):
         self.vpnconfig = vpnconfig
         self.iface = iface
         self.flagpattern = flagpattern

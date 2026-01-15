@@ -334,8 +334,8 @@ REGISTRAR_URL = "http://VOTRE_IP:3960"
    
    Téléchargez votre configuration VPN ci-dessous.
    ```
-6. Points: 200 (ajustez selon difficulté)
-7. Flag: `flag{stuck_in_the_middle_with_you}`
+6. Points: 500 (ajustez selon difficulté)
+7. Flag: `2600{I_GoT_Th3_f33l1n_s0m3th1ng_a1nt_r1ght}`
 
 ---
 
